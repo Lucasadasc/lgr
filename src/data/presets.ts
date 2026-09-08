@@ -1,0 +1,161 @@
+import { PresetItem } from '../types/lgr';
+
+export const PRESETS: PresetItem[] = [
+  // --- Exemplos da Apostila DCA/UFRN ---
+  {
+    id: 'exemplo-1',
+    category: 'exemplo',
+    name: 'Exemplo 1 (Apostila): 2 Pólos e 1 Zero Reais',
+    description: 'G(s)H(s) = K(s + 2) / [s(s + 4)] — 2 ramos, 1 assíntota real e encontro no zero.',
+    gNum: '1, 2',
+    gDen: '1, 4, 0',
+    hNum: '1',
+    hDen: '1',
+    kDefault: 10,
+    testPoint: { re: -2, im: 0 },
+  },
+  {
+    id: 'exemplo-2',
+    category: 'exemplo',
+    name: 'Exemplo 2 (Apostila): 4 Pólos e 1 Zero Reais',
+    description: 'G(s)H(s) = K(s + 1) / [s(s + 2)(s + 4)^2] — Pólo duplo em s = -4, 3 assíntotas a 60°, 180°, 300° com σ_A = -3.',
+    gNum: '1, 1',
+    gDen: '1, 10, 32, 32, 0', // s(s+2)(s+4)^2 = s^4 + 10s^3 + 32s^2 + 32s
+    hNum: '1',
+    hDen: '1',
+    kDefault: 25,
+    testPoint: { re: -2.5994, im: 0 },
+  },
+  {
+    id: 'exemplo-3',
+    category: 'exemplo',
+    name: 'Exemplo 3 (Apostila): 2 Pólos Reais e 2 Pólos Complexos',
+    description: 'G(s)H(s) = K / [s(s + 4)(s^2 + 8s + 32)] — Pólos em 0, -4, -4±4j. Cruzamento jω em s = ±3.266j com K_lim = 568.89.',
+    gNum: '1',
+    gDen: '1, 12, 64, 128, 0', // s(s+4)(s^2+8s+32) = s^4 + 12s^3 + 64s^2 + 128s
+    hNum: '1',
+    hDen: '1',
+    kDefault: 150,
+    testPoint: { re: 0, im: 3.266 },
+  },
+
+  // --- Exercícios 2.5 da Apostila ---
+  {
+    id: 'exercicio-2-5a',
+    category: 'exercicio',
+    name: 'Exercício 2.5(a): G(s)H(s) = K / [s(s^2 + 6s + 25)]',
+    description: 'Testar se o ponto s_i = -1.0066 + 3.9950j pertence ao LGR.',
+    gNum: '1',
+    gDen: '1, 6, 25, 0',
+    hNum: '1',
+    hDen: '1',
+    kDefault: 20,
+    testPoint: { re: -1.0066, im: 3.995 },
+  },
+  {
+    id: 'exercicio-2-5b',
+    category: 'exercicio',
+    name: 'Exercício 2.5(b): G(s) = K / [s(s + 1)(s + 2)], H(s) = 1',
+    description: 'Testar se o ponto s_i = -0.3337 - 0.5780j pertence ao LGR.',
+    gNum: '1',
+    gDen: '1, 3, 2, 0', // s(s+1)(s+2) = s^3 + 3s^2 + 2s
+    hNum: '1',
+    hDen: '1',
+    kDefault: 5,
+    testPoint: { re: -0.3337, im: -0.578 },
+  },
+  {
+    id: 'exercicio-2-5c',
+    category: 'exercicio',
+    name: 'Exercício 2.5(c): G(s)H(s) = K(s + 2) / [s^2 + 2s + 3]',
+    description: 'Pólos complexos em -1 ± √2 j e zero real em s = -2. Testar ponto s_i = -0.7660 + 0.2995j.',
+    gNum: '1, 2',
+    gDen: '1, 2, 3',
+    hNum: '1',
+    hDen: '1',
+    kDefault: 4,
+    testPoint: { re: -0.766, im: 0.2995 },
+  },
+  {
+    id: 'exercicio-2-5d',
+    category: 'exercicio',
+    name: 'Exercício 2.5(d): G(s) = 1/(s^2+4s+5), H(s) = 1/s',
+    description: 'Testar se o ponto s_i = -0.4968 + 1.3290j pertence ao LGR.',
+    gNum: '1',
+    gDen: '1, 4, 5',
+    hNum: '1',
+    hDen: '1, 0', // s
+    kDefault: 10,
+    testPoint: { re: -0.4968, im: 1.329 },
+  },
+  {
+    id: 'exercicio-2-5e',
+    category: 'exercicio',
+    name: 'Exercício 2.5(e): G(s) = 1/[s(s^2+4s+13)], H(s) = 1/(s+1)',
+    description: 'Pólos em 0, -1, -2±3j. Testar se s_i = 2.5509 - 4.1649j pertence ao LGR.',
+    gNum: '1',
+    gDen: '1, 4, 13, 0',
+    hNum: '1',
+    hDen: '1, 1', // s + 1
+    kDefault: 30,
+    testPoint: { re: 2.5509, im: -4.1649 },
+  },
+  {
+    id: 'exercicio-2-5f',
+    category: 'exercicio',
+    name: 'Exercício 2.5(f): G(s) = 1/(s + 3.6), H(s) = (s + 1)/s^2',
+    description: 'Pólo duplo na origem, pólo em -3.6 e zero em -1. Testar s_i = -0.2968 + 4.3290j.',
+    gNum: '1',
+    gDen: '1, 3.6',
+    hNum: '1, 1',
+    hDen: '1, 0, 0', // s^2
+    kDefault: 12,
+    testPoint: { re: -0.2968, im: 4.329 },
+  },
+
+  // --- Funções Típicas da Tabela 2.3 ---
+  {
+    id: 'tipica-2',
+    category: 'tipica',
+    name: 'Tabela 2.3 - Caso 2: Dois Pólos Reais',
+    description: 'G(s) = K / [(s + 1)(s + 5)] — Saída vertical a 90° e 270° no ponto médio.',
+    gNum: '1',
+    gDen: '1, 6, 5', // (s+1)(s+5) = s^2 + 6s + 5
+    hNum: '1',
+    hDen: '1',
+    kDefault: 15,
+  },
+  {
+    id: 'tipica-5',
+    category: 'tipica',
+    name: 'Tabela 2.3 - Caso 5: Pólo na Origem e Pólo Real',
+    description: 'G(s) = K / [s(s + 2)] — Saída a 90° em s = -1.',
+    gNum: '1',
+    gDen: '1, 2, 0',
+    hNum: '1',
+    hDen: '1',
+    kDefault: 8,
+  },
+  {
+    id: 'tipica-7',
+    category: 'tipica',
+    name: 'Tabela 2.3 - Caso 7: 3 Pólos e 1 Zero',
+    description: 'G(s) = K(s + 3) / [s(s + 1)(s + 5)] — Ramos curvam-se e um entra no zero.',
+    gNum: '1, 3',
+    gDen: '1, 6, 5, 0', // s(s+1)(s+5) = s^3 + 6s^2 + 5s
+    hNum: '1',
+    hDen: '1',
+    kDefault: 20,
+  },
+  {
+    id: 'tipica-10',
+    category: 'tipica',
+    name: 'Tabela 2.3 - Caso 10: Pólo Duplo na Origem com Zero Estabilizante',
+    description: 'G(s) = K(s + 1) / [s^2(s + 4)] — Estabiliza para ganhos elevados.',
+    gNum: '1, 1',
+    gDen: '1, 4, 0, 0', // s^2(s+4) = s^3 + 4s^2
+    hNum: '1',
+    hDen: '1',
+    kDefault: 30,
+  },
+];
