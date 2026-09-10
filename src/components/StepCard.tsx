@@ -256,6 +256,55 @@ function renderStepDetails(step: LgrStepData, solution: LgrSolution) {
               </table>
             </div>
           )}
+
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '0.65rem',
+              padding: '0.85rem',
+              background: 'var(--bg-input)',
+              border: '1px solid var(--border-subtle)',
+              borderRadius: 'var(--radius-md)',
+            }}
+          >
+            <strong style={{ fontSize: '0.85rem', color: 'var(--text-accent)' }}>
+              Desenvolvimento do critério de Routh-Hurwitz
+            </strong>
+            <MathView block math={`${formatCharacteristicPolynomial(solution.openLoopDen, solution.openLoopNum)} = 0`} />
+            {solution.openLoopDen.length === 4 && (
+              <MathView
+                block
+                math={getCubicRouthExpression(solution.openLoopDen, solution.openLoopNum)}
+              />
+            )}
+
+            {solution.imaginaryCrossings.length > 0 ? (
+              <>
+                <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+                  O cruzamento ocorre quando o primeiro elemento da linha de \(s^1\) se anula. Nesse ponto, a linha \(s^2\) forma o polinômio auxiliar.
+                </span>
+                {solution.imaginaryCrossings.map((crossing, index) => (
+                  <MathView
+                    key={index}
+                    block
+                    math={`K = ${crossing.kLim.toFixed(4)} \\quad\\Longrightarrow\\quad s_{1,2} = \\pm j${crossing.omega.toFixed(4)}`}
+                  />
+                ))}
+                <MathView
+                  block
+                  math={`\\text{Faixa estável: } 0 < K < ${solution.imaginaryCrossings[0].kLim.toFixed(4)}`}
+                />
+                <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+                  O menor ganho crítico é a primeira fronteira de estabilidade; o segundo cruzamento é reportado porque também pertence ao LGR, mas o sistema já deixou a faixa estável.
+                </span>
+              </>
+            ) : (
+              <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+                Como não há cruzamentos positivos, não existe ganho crítico detectado para limitar a estabilidade.
+              </span>
+            )}
+          </div>
         </div>
       );
 
@@ -297,4 +346,49 @@ function renderStepDetails(step: LgrStepData, solution: LgrSolution) {
     default:
       return null;
   }
+}
+
+function formatCharacteristicPolynomial(den: number[], num: number[]): string {
+  const degree = Math.max(den.length, num.length) - 1;
+  const denPadded = Array(degree + 1 - den.length).fill(0).concat(den);
+  const numPadded = Array(degree + 1 - num.length).fill(0).concat(num);
+  const terms: string[] = [];
+
+  for (let index = 0; index <= degree; index++) {
+    const power = degree - index;
+    const constant = denPadded[index];
+    const gain = numPadded[index];
+    if (Math.abs(constant) < 1e-9 && Math.abs(gain) < 1e-9) continue;
+
+    let coefficient = '';
+    if (Math.abs(constant) > 1e-9 && Math.abs(gain) > 1e-9) {
+      const gainText = Math.abs(gain) === 1 ? 'K' : `${Math.abs(gain)}K`;
+      coefficient = `${constant} ${gain > 0 ? '+' : '-'} ${gainText}`;
+    } else if (Math.abs(gain) > 1e-9) {
+      coefficient = Math.abs(gain) === 1 ? 'K' : `${Math.abs(gain)}K`;
+    } else {
+      coefficient = `${constant}`;
+    }
+
+    const term = power === 0 ? coefficient : power === 1 ? `${coefficient}s` : `${coefficient}s^{${power}}`;
+    terms.push(terms.length === 0 || coefficient.startsWith('-') ? term : `+ ${term}`);
+  }
+
+  return terms.join(' ');
+}
+
+function getCubicRouthExpression(den: number[], num: number[]): string {
+  const denPadded = [0, ...den];
+  const numPadded = [0, ...num];
+  const a3 = denPadded[1] || 0;
+  const a2 = denPadded[2] || 0;
+  const a1 = denPadded[3] || 0;
+  const a0 = denPadded[4] || 0;
+  const b2 = numPadded[1] || 0;
+  const b1 = numPadded[2] || 0;
+  const b0 = numPadded[3] || 0;
+  const rowS2 = `${a2} ${b2 >= 0 ? '+' : '-'} ${Math.abs(b2) === 1 ? 'K' : `${Math.abs(b2)}K`}`;
+  const rowS1Numerator = `(${rowS2})(${a1} ${b1 >= 0 ? '+' : '-'} ${Math.abs(b1) === 1 ? 'K' : `${Math.abs(b1)}K`}) - (${a3})(${a0} ${b0 >= 0 ? '+' : '-'} ${Math.abs(b0) === 1 ? 'K' : `${Math.abs(b0)}K`})`;
+
+  return `\\begin{array}{c|cc} s^3 & ${a3} & ${a1} ${b1 >= 0 ? '+' : '-'} ${Math.abs(b1) === 1 ? 'K' : `${Math.abs(b1)}K`} \\\\ s^2 & ${rowS2} & ${a0} ${b0 >= 0 ? '+' : '-'} ${Math.abs(b0) === 1 ? 'K' : `${Math.abs(b0)}K`} \\\\ s^1 & \\frac{${rowS1Numerator}}{${rowS2}} & 0 \\\\ s^0 & ${a0} ${b0 >= 0 ? '+' : '-'} ${Math.abs(b0) === 1 ? 'K' : `${Math.abs(b0)}K`} & \\end{array}`;
 }

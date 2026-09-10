@@ -53,7 +53,8 @@ export function solveLgr(openLoopNum: Polynomial, openLoopDen: Polynomial): LgrS
     openLoopNum,
     openLoopDen,
     rawPoles,
-    rawZeros
+    rawZeros,
+    validBreakaways
   );
 
   // 8. Generate 10 Structured Steps
@@ -343,7 +344,8 @@ function generateLgrTrajectories(
   num: Polynomial,
   den: Polynomial,
   poles: Complex[],
-  zeros: Complex[]
+    zeros: Complex[],
+    criticalPoints: BreakawayPoint[]
 ): { trajectories: LgrTrajectoryPoint[][]; maxRecommendedGain: number } {
   const nP = poles.length;
   if (nP === 0) return { trajectories: [], maxRecommendedGain: 100 };
@@ -363,6 +365,14 @@ function generateLgrTrajectories(
     const k = Math.pow(t, 2.8) * maxK;
     kValues.push(k);
   }
+
+    // The locus changes from real to complex (or back) at these gains. Include
+    // them explicitly so the rendered branches meet on the real axis instead
+    // of jumping over the repeated root between two sampled gains.
+    criticalPoints
+      .filter((point) => point.isValid && point.k > 0 && point.k <= maxK)
+      .forEach((point) => kValues.push(point.k));
+    kValues.sort((a, b) => a - b);
 
   const branches: LgrTrajectoryPoint[][] = Array.from({ length: nP }, () => []);
 
@@ -387,6 +397,18 @@ function generateLgrTrajectories(
 
     // Minimum weight Hungarian-like nearest neighbor matching to keep branches continuous
     const matched = matchRootsContinuity(prevRoots, currentRoots);
+
+    const criticalPoint = criticalPoints.find((point) => Math.abs(point.k - k) < 1e-8);
+    if (criticalPoint) {
+      const closestBranches = matched
+        .map((root, branchIndex) => ({ branchIndex, distance: Math.hypot(root.re - criticalPoint.s.re, root.im - criticalPoint.s.im) }))
+        .sort((a, b) => a.distance - b.distance)
+        .slice(0, 2);
+
+      closestBranches.forEach(({ branchIndex }) => {
+        matched[branchIndex] = new Complex(criticalPoint.s.re, criticalPoint.s.im);
+      });
+    }
 
     for (let b = 0; b < nP; b++) {
       const root = matched[b];
@@ -502,7 +524,7 @@ function buildStep3(poles: PoleZero[], zeros: PoleZero[], nP: number, nZ: number
     subtitle: 'Localização dos pontos de partida e término do LGR',
     summary: 'Os pólos (×) marcam o início do LGR (K = 0) e os zeros (○) marcam o término (K → ∞).',
     latexFormulas: [
-      '\\text{Pólos (\\mathbf{\\times})}: K = 0 \\quad \\text{e} \\quad \\text{Zeros (\\mathbf{\\circ})}: K \\to \\infty',
+      '\\text{Pólos } \\times: K = 0 \\quad \\text{e} \\quad \\text{Zeros } \\circ: K \\to \\infty',
     ],
     explanation:
       'Traçamos no plano complexo s = σ + jω os pólos de malha aberta com o símbolo × (vermelho) e os zeros de malha aberta com o símbolo ○ (azul). Cada ramo do LGR deve iniciar em um pólo em K=0 e convergir para um zero (finito ou no infinito) quando K cresce.',

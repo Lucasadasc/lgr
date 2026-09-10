@@ -63,6 +63,25 @@ export const LgrPlot: React.FC<LgrPlotProps> = ({
       solution.imaginaryCrossings.forEach((c) => allY.push(c.omega));
     }
 
+    // Include real-axis breakaway/break-in points so the locus is not clipped
+    // before a branch reaches its next real-axis intersection.
+    solution.validBreakaways.forEach((b) => {
+      allX.push(b.s.re);
+      allY.push(Math.abs(b.s.im));
+    });
+
+    // Include the useful visible portion of the trajectories without letting
+    // the branch that tends to infinity determine the entire viewport.
+    const locusExtent = Math.max(...allX.map((x) => Math.abs(x)), 1) * 3;
+    solution.trajectories.forEach((branch) => {
+      branch.forEach((point) => {
+        if (Math.abs(point.re) <= locusExtent) {
+          allX.push(point.re);
+          allY.push(Math.abs(point.im));
+        }
+      });
+    });
+
     const minX = allX.length > 0 ? Math.min(...allX) - 2 : -6;
     const maxX = allX.length > 0 ? Math.max(...allX) + 2 : 2;
     const maxY = allY.length > 0 ? Math.max(...allY) + 2 : 5;
@@ -75,7 +94,7 @@ export const LgrPlot: React.FC<LgrPlotProps> = ({
 
     const scaleX = (canvasWidth * 0.75) / spanX;
     const scaleY = (canvasHeight * 0.75) / spanY;
-    const autoScale = Math.min(Math.max(Math.min(scaleX, scaleY), 20), 100);
+    const autoScale = Math.min(Math.max(Math.min(scaleX, scaleY), 8), 100);
 
     setView({
       centerX: (minX + maxX) / 2,
@@ -432,13 +451,14 @@ export const LgrPlot: React.FC<LgrPlotProps> = ({
   }, [solution, stepNumber, testPoint, view, mathToScreen, screenToMath, height]);
 
   // Mouse / Touch Interactivity
-  const handleMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
+  const handlePointerDown = (e: React.PointerEvent<HTMLCanvasElement>) => {
     if (!interactive) return;
+    e.currentTarget.setPointerCapture(e.pointerId);
     setIsDragging(true);
     setDragStart({ x: e.clientX, y: e.clientY });
   };
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
+  const handlePointerMove = (e: React.PointerEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -499,7 +519,12 @@ export const LgrPlot: React.FC<LgrPlotProps> = ({
     }
   };
 
-  const handleMouseUp = () => setIsDragging(false);
+  const handlePointerUp = (e: React.PointerEvent<HTMLCanvasElement>) => {
+    if (e.currentTarget.hasPointerCapture(e.pointerId)) {
+      e.currentTarget.releasePointerCapture(e.pointerId);
+    }
+    setIsDragging(false);
+  };
 
   const handleWheel = (e: React.WheelEvent<HTMLCanvasElement>) => {
     if (!interactive) return;
@@ -538,10 +563,10 @@ export const LgrPlot: React.FC<LgrPlotProps> = ({
         <canvas
           ref={canvasRef}
           className="plot-canvas"
-          onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-          onMouseLeave={handleMouseUp}
+          onPointerDown={handlePointerDown}
+          onPointerMove={handlePointerMove}
+          onPointerUp={handlePointerUp}
+          onPointerCancel={handlePointerUp}
           onWheel={handleWheel}
         />
 

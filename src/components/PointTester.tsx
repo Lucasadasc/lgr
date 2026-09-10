@@ -181,7 +181,85 @@ export const PointTester: React.FC<PointTesterProps> = ({
               <div>• Produtório das distâncias aos pólos: <strong>{productDistPoles.toFixed(4)}</strong></div>
               <div>• Produtório das distâncias aos zeros: <strong>{productDistZeros.toFixed(4)}</strong></div>
               <div style={{ marginTop: '0.25rem', fontSize: '0.95rem', fontWeight: 700, color: '#10b981' }}>
-                <MathView math={`K_1 = \\frac{\\prod |s_1 + p_i|}{\\prod |s_1 + z_j|} = ${gainK.toFixed(4)}`} />
+                <MathView math={`K_1 = \\frac{\\prod |s_1 - p_i|}{\\prod |s_1 - z_j|} = ${gainK.toFixed(4)}`} />
+              </div>
+            </div>
+          </div>
+
+          <div
+            style={{
+              gridColumn: '1 / -1',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '0.75rem',
+              paddingTop: '0.75rem',
+              borderTop: '1px solid var(--border-subtle)',
+            }}
+          >
+            <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-accent)' }}>
+              Como o resultado foi obtido
+            </span>
+            <MathView
+              block
+              math={`s_1 = ${reVal.toFixed(4)} ${imVal >= 0 ? '+' : '-'} j${Math.abs(imVal).toFixed(4)}`}
+            />
+
+            <div style={{ fontSize: '0.825rem', color: 'var(--text-secondary)' }}>
+              Para cada pólo e zero, calcula-se o vetor até o ponto testado: \\(s_1 - a_i\\). A distância é o módulo
+              desse vetor e o ângulo é o seu argumento.
+            </div>
+
+            <div style={{ overflowX: 'auto' }}>
+              <table className="data-table">
+                <thead>
+                  <tr>
+                    <th>Origem</th>
+                    <th>Vetor</th>
+                    <th>Distância</th>
+                    <th>Ângulo</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {poleVectors.map((vector, index) => (
+                    <tr key={`pole-${index}`}>
+                      <td style={{ color: '#ef4444' }}>Pólo {vector.from}</td>
+                      <td style={{ fontFamily: 'var(--font-mono)' }}>s₁ − ({vector.from})</td>
+                      <td style={{ fontFamily: 'var(--font-mono)' }}>{vector.dist.toFixed(4)}</td>
+                      <td style={{ fontFamily: 'var(--font-mono)' }}>{vector.angle.toFixed(2)}°</td>
+                    </tr>
+                  ))}
+                  {zeroVectors.map((vector, index) => (
+                    <tr key={`zero-${index}`}>
+                      <td style={{ color: '#06b6d4' }}>Zero {vector.from}</td>
+                      <td style={{ fontFamily: 'var(--font-mono)' }}>s₁ − ({vector.from})</td>
+                      <td style={{ fontFamily: 'var(--font-mono)' }}>{vector.dist.toFixed(4)}</td>
+                      <td style={{ fontFamily: 'var(--font-mono)' }}>{vector.angle.toFixed(2)}°</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '0.75rem' }}>
+              <div style={{ padding: '0.7rem', background: 'var(--bg-card)', borderRadius: 'var(--radius-sm)' }}>
+                <strong style={{ fontSize: '0.8rem' }}>Critério do ângulo</strong>
+                <MathView
+                  block
+                  math={`\\angle G(s_1)H(s_1) = \\sum \\phi_j - \\sum \\theta_i = ${angleSumZeros.toFixed(2)}^\\circ - ${angleSumPoles.toFixed(2)}^\\circ = ${netPhase.toFixed(2)}^\\circ`}
+                />
+                <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>
+                  Normalizado para {normalizedPhase.toFixed(2)}°; o ponto pertence quando esse valor é 180° (módulo 360°).
+                </span>
+              </div>
+              <div style={{ padding: '0.7rem', background: 'var(--bg-card)', borderRadius: 'var(--radius-sm)' }}>
+                <strong style={{ fontSize: '0.8rem' }}>Critério do módulo</strong>
+                <MathView
+                  block
+                  math={`K_1 = \\frac{${productDistPoles.toFixed(4)}}{${productDistZeros.toFixed(4)}} = ${gainK.toFixed(4)}`}
+                />
+                <span style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>
+                  O ganho é positivo e ajusta o módulo de G(s)H(s) para 1.
+                </span>
               </div>
             </div>
           </div>
