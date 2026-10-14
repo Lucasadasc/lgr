@@ -6,22 +6,27 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "canvas-confetti": "^1.9.4",
-    "katex": "^0.16.21",
+    "katex": "^0.19.0",
     "lucide-react": "^1.16.0",
+    "plotly.js-basic-dist-min": "^4.0.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@types/canvas-confetti": "^1.9.0",
     "@types/katex": "^0.16.7",
+    "@types/plotly.js": "^3.0.13",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
-    "@vitejs/plugin-react": "^4.3.4",
+    "@vitejs/plugin-react": "^6.1.0",
     "typescript": "^5.7.3",
-    "vite": "^5.4.14"
+    "vite": "^8.3.4",
+    "vitest": "^5.0.4"
   }
 }

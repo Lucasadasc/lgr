@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import './unit2.css';
+import React, { useState, useEffect, useMemo, lazy, Suspense } from 'react';
 import { TransferFunctionInput, PresetItem, ComplexNum } from './types/lgr';
 import { parsePolynomialInput } from './math/parser';
 import { solveLgr } from './math/lgrEngine';
@@ -11,9 +12,17 @@ import { ControllerStudio } from './components/ControllerStudio';
 import { PresetsModal } from './components/PresetsModal';
 import { DocModal } from './components/DocModal';
 import { LgrPlot } from './components/LgrPlot';
+import type { ResultadoProjeto } from './lib/controladores';
+import { Polynomial } from './math/polynomial';
 import { Layers, Sliders, Target } from 'lucide-react';
 
+const ProjetoControladores = lazy(() => import('./components/controladores/ProjetoControladores'));
+
 export const App: React.FC = () => {
+  const [visitedUnit2, setVisitedUnit2] = useState(false);
+  const [unit, setUnit] = useState<1 | 2>(1);
+  useEffect(() => { document.body.dataset.impressaoUnidade = String(unit); }, [unit]);
+
   // Theme state
   const [theme, setTheme] = useState<'dark' | 'light'>('light');
 
@@ -93,6 +102,12 @@ export const App: React.FC = () => {
     setCurrentStepIndex(9); // Jump to final locus step to see the impact
   };
 
+  const handleDesign = (result: ResultadoProjeto) => {
+    const compensated = { num: new Polynomial(result.Gc.num).mul(new Polynomial(result.entrada.G.num)).coeffs, den: new Polynomial(result.Gc.den).mul(new Polynomial(result.entrada.G.den)).coeffs };
+    setInputData({ gNum: compensated.num.join(', '), gDen: compensated.den.join(', '), hNum: result.entrada.H.num.join(', '), hDen: result.entrada.H.den.join(', ') });
+    setActiveTab('steps'); setCurrentStepIndex(9); setUnit(1);
+  };
+
   return (
     <div className="app-container">
       {/* Top Header */}
@@ -105,6 +120,11 @@ export const App: React.FC = () => {
 
       {/* Main Container */}
       <main className="main-content">
+        <nav className="tabs-container unit-tabs no-print" aria-label="Unidades da disciplina">
+          <button id="nav-lgr" className={`tab-btn ${unit === 1 ? 'active' : ''}`} aria-pressed={unit === 1} onClick={() => setUnit(1)}>1ª Unidade · Lugar das raízes</button>
+          <button id="nav-controladores" className={`tab-btn ${unit === 2 ? 'active' : ''}`} aria-pressed={unit === 2} onClick={() => { setVisitedUnit2(true); setUnit(2); }}>2ª Unidade · Projeto e discretização</button>
+        </nav>
+        <div hidden={unit !== 1} className="unit-one" aria-labelledby="nav-lgr">
         {/* Input Configuration & Plant Definition */}
         <InputSection
           inputData={inputData}
@@ -221,6 +241,8 @@ export const App: React.FC = () => {
             </div>
           </div>
         )}
+        </div>
+        {visitedUnit2 && <Suspense fallback={<p role="status">Carregando segunda unidade…</p>}><ProjetoControladores ativo={unit === 2} planta={inputData} aoAplicar={handleDesign} /></Suspense>}
       </main>
 
       {/* Footer */}

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { TransferFunctionInput } from '../types/lgr';
+import { parsePolynomialInput } from '../math/parser';
 import { MathView } from './MathView';
 import { Cpu, Check } from 'lucide-react';
 
@@ -69,11 +70,9 @@ export const ControllerStudio: React.FC<ControllerStudioProps> = ({
   }
 
   const handleApply = () => {
-    // Multiply G(s) by C(s)
-    // For simplicity, multiply polynomial strings
     onApplyController(
-      `${currentInput.gNum} * (${cNum})`,
-      `${currentInput.gDen} * (${cDen})`
+      parsePolynomialInput(currentInput.gNum).mul(parsePolynomialInput(cNum)).coeffs.join(', '),
+      parsePolynomialInput(currentInput.gDen).mul(parsePolynomialInput(cDen)).coeffs.join(', ')
     );
   };
 
@@ -215,7 +214,7 @@ export const ControllerStudio: React.FC<ControllerStudioProps> = ({
           <p style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{description}</p>
         </div>
 
-        <button className="btn btn-primary" onClick={handleApply}>
+        <button className="btn btn-primary" onClick={handleApply} disabled={(type === 'Lead' && !(pLead > zLead && zLead > 0)) || (type === 'Lag' && !(zLag > pLag && pLag > 0)) || ![kp, ki, kd].every(Number.isFinite)}>
           <Check size={16} />
           Acoplar Controlador à Planta G(s)
         </button>

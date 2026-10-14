@@ -1,0 +1,355 @@
+/* Estrutura da segunda unidade. Controles e superfícies usam src/index.css. */
+[hidden] { display: none !important; }
+.unit-one, .conteudo-controladores { display: flex; flex-direction: column; gap: 1.25rem; min-width: 0; }
+.unit-tabs .tab-btn { min-height: 44px; flex: 1; justify-content: center; }
+#painel-controladores { --muted: var(--text-secondary); --border: var(--border-subtle); --ink: var(--text-primary); min-width: 0; }
+#painel-controladores .ajuda { color: var(--text-secondary); font-size: .875rem; max-width: 75ch; }
+.formulario-projeto { padding: 1.5rem; }
+.conteudo-controladores > .btn { align-self: flex-start; white-space: normal; }
+.formulario-projeto label, .visualizacao-projeto label, .step-body > label, .step-body .grid2 label { font-size: .825rem; font-weight: 600; color: var(--text-secondary); }
+.grid2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; }
+#painel-controladores .formula { margin-block: .5rem; }
+#painel-controladores .mono { font-family: var(--font-mono); overflow-wrap: anywhere; }
+#painel-controladores .badge-ok, #painel-controladores .badge-warn { padding: .85rem 1rem; border-radius: var(--radius-md); margin-block: .5rem; font-size: .875rem; }
+#painel-controladores .badge-ok { background: var(--status-ok-bg); color: var(--status-ok-text); }
+#painel-controladores .badge-warn { background: var(--status-warn-bg); color: var(--status-warn-text); }
+@media (max-width: 600px) { .grid2 { grid-template-columns: 1fr; } .unit-tabs { flex-direction: column; } }
+.formulario-projeto {
+  display: grid;
+  gap: 20px;
+}
+.formulario-projeto fieldset {
+  min-width: 0;
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+.formulario-projeto legend {
+  font-weight: 700;
+  padding: 0;
+  margin-bottom: 8px;
+}
+.formulario-projeto label,
+.visualizacao-projeto label,
+#painel-controladores .step-body > label,
+#painel-controladores .step-body .grid2 label {
+  display: grid;
+  gap: 6px;
+}
+.visualizacao-projeto {
+  margin: 24px 0 16px;
+}
+.visualizacao-projeto select {
+  max-width: 360px;
+}
+.ganhos-projeto {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  font-variant-numeric: tabular-nums;
+}
+.ganhos-projeto dt {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+.ganhos-projeto dd {
+  margin: 4px 0 0;
+  font-family: var(--font-mono);
+  overflow-wrap: anywhere;
+}
+.lista-polos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+}
+#painel-controladores .step-body .grid2 .opcao-discretizacao {
+  grid-template-columns: auto 1fr;
+  align-items: center;
+}
+.opcao-discretizacao input {
+  width: 20px;
+  height: 20px;
+  min-height: 20px;
+  padding: 0;
+  accent-color: var(--ink);
+}
+.tabela-scroll {
+  overflow-x: auto;
+}
+.tabela-scroll table {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+.tabela-scroll caption {
+  text-align: left;
+  font-weight: 600;
+  padding: 12px 0;
+}
+#painel-controladores .step-body {
+  padding: 0;
+}
+#painel-controladores .step-body > label {
+  margin: 20px 0 12px;
+}
+@media (max-width: 560px) {
+  .unidades {
+    flex-direction: column;
+  }
+  .ganhos-projeto {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media print {
+  .impressao-passos details > :not(summary) {
+    display: block !important;
+  }
+  .memoria-completa {
+    display: block !important;
+  }
+  #painel-controladores .ganhos-projeto {
+    display: grid !important;
+  }
+}
+
+.memoria-recolhida {
+  display: none;
+}
+@media print {
+  .memoria-recolhida {
+    display: block;
+  }
+  .impressao-passos .modebar {
+    display: none !important;
+  }
+  .impressao-passos details {
+    break-inside: auto;
+    page-break-inside: auto;
+  }
+  .impressao-passos summary {
+    break-after: avoid;
+  }
+}
+.relatorio-impressao {
+  display: none;
+}
+.impressao-lista {
+  margin: 16px 0;
+}
+
+@media print {
+  .no-print,
+  .dica-prova,
+  .lgr-hero .hero-gh {
+    display: none !important;
+  }
+
+  details,
+  .card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .formula,
+  .mono {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  summary {
+    padding-right: 0;
+  }
+
+  header.lgr-hero,
+  main {
+    padding: 0;
+  }
+
+  body {
+    background: #fff;
+  }
+}
+
+@page resolucao-controladores {
+  size: A4 portrait;
+  margin: 15mm;
+}
+@media print {
+  body[data-impressao-unidade="2"] {
+    color-scheme: light;
+    --ink: #0f172a;
+    --muted: #475569;
+    --bg: #fff;
+    --surface: #fff;
+    --border: #cbd5e1;
+  }
+  body[data-impressao-unidade="2"] header.lgr-hero,
+  body[data-impressao-unidade="2"] .conteudo-controladores {
+    display: none !important;
+  }
+  body[data-impressao-unidade="2"] main {
+    width: auto;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+  body[data-impressao-unidade="2"] .relatorio-impressao {
+    display: block;
+    color: #0f172a;
+    font:
+      10pt/1.4 system-ui,
+      sans-serif;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+  .pagina-resolucao {
+    page: resolucao-controladores;
+    min-height: 264mm;
+    display: flex;
+    flex-direction: column;
+    break-after: page;
+    padding: 0;
+  }
+  .questao-impressa:last-child .pagina-resolucao:last-child {
+    break-after: auto;
+  }
+  .cabecalho-resolucao {
+    border-bottom: 1px solid #cbd5e1;
+    padding-bottom: 4mm;
+    color: #475569;
+    font-size: 9pt;
+  }
+  .cabecalho-resolucao strong {
+    color: #0f172a;
+  }
+  .relatorio-impressao p {
+    margin: 0 0 2mm;
+    max-width: none;
+  }
+  .pagina-resolucao > h2 {
+    font-size: 18pt;
+    line-height: 1.2;
+    margin: 6mm 0 5mm;
+  }
+  .corpo-resolucao {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 5mm;
+  }
+  .corpo-resolucao > section {
+    break-inside: avoid;
+  }
+  .corpo-resolucao h3 {
+    font-size: 11pt;
+    line-height: 1.4;
+    margin: 0 0 2mm;
+    break-after: avoid;
+  }
+  .relatorio-impressao .formula {
+    background: none;
+    padding: 0;
+    margin: 3mm 0;
+    border-radius: 0;
+    overflow: visible;
+    font-size: 10.5pt;
+  }
+  .relatorio-impressao .tf-impressa .formula {
+    font-size: 9pt;
+  }
+  .relatorio-impressao .mono {
+    background: none;
+    padding: 0;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    font-size: 9pt;
+  }
+  .requisitos-impressos {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9.5pt;
+  }
+  .requisitos-impressos th,
+  .requisitos-impressos td {
+    padding: 2mm 0;
+    text-align: left;
+    background: #fff;
+    border: 0;
+    border-bottom: 1px solid #cbd5e1;
+  }
+  .requisitos-impressos th[scope="row"] {
+    width: 50%;
+    font-weight: 400;
+    padding-right: 4mm;
+  }
+  .grafico-impresso {
+    width: 100%;
+    height: 58mm;
+    display: block;
+    margin: 0 0 3mm;
+  }
+  .grafico-impresso text {
+    fill: #0f172a;
+    font:
+      10px system-ui,
+      sans-serif;
+  }
+  .amostragem-impressa {
+    font-size: 8pt;
+    color: #475569;
+  }
+  .rodape-resolucao {
+    display: flex;
+    justify-content: space-between;
+    gap: 4mm;
+    font-size: 8pt;
+    color: #475569;
+    border-top: 1px solid #cbd5e1;
+    padding-top: 3mm;
+    margin-top: 5mm;
+  }
+}
+
+@media print {
+ body[data-impressao-unidade="2"] .header-wrapper,
+ body[data-impressao-unidade="2"] .footer,
+ body[data-impressao-unidade="2"] .unit-tabs,
+ body[data-impressao-unidade="2"] .unit-one { display: none !important; }
+ body[data-impressao-unidade="2"] #painel-controladores { --bg-tertiary: #fff; --text-primary: #0f172a; --text-secondary: #475569; }
+ body::before { display: none; }
+}
+
+ .resolution-step { margin-top: 1.25rem; }
+.resolution-step .step-card-header { margin-bottom: 0; }
+.step-chip.has-chart::after { content: none; }
+@media print {
+  #painel-controladores .relatorio-impressao .formula {
+    background: none;
+    padding: 0;
+    margin: 3mm 0;
+    border-radius: 0;
+    overflow: visible;
+    font-size: 10.5pt;
+  }
+  #painel-controladores .relatorio-impressao .tf-impressa .formula { font-size: 9pt; }
+}
+@media print {
+  .corpo-resolucao { gap: 3mm; }
+  .pagina-resolucao > h2 { margin: 4mm 0; }
+  #painel-controladores .relatorio-impressao .formula { margin: 1.5mm 0; }
+  .grafico-impresso { height: 50mm; }
+  .rodape-resolucao { margin-top: 3mm; }
+}
+
+@media print {
+  #painel-controladores .relatorio-impressao .formula-box { display: block; border: 0; box-shadow: none; }
+}
+
+@media print {
+  .memoria-discreta .tabela-scroll { overflow: visible; }
+  .memoria-discreta .data-table { display: table; white-space: normal; font-size: 8.5pt; }
+  .memoria-discreta .data-table th, .memoria-discreta .data-table td { padding: 1.5mm; }
+  .memoria-discreta .formula-inline { font-size: 8.5pt; }
+  #painel-controladores .relatorio-impressao .badge-ok { background: #dcfce7; color: #166534; }
+  #painel-controladores .relatorio-impressao .badge-warn { background: #fef3c7; color: #92400e; }
+}

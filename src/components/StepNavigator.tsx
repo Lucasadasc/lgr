@@ -1,9 +1,9 @@
 import React from 'react';
 import { LgrStepData } from '../types/lgr';
-import { ChevronLeft, ChevronRight, Layers, ListFilter } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Layers, ListFilter, ChartLine } from 'lucide-react';
 
 interface StepNavigatorProps {
-  steps: LgrStepData[];
+  steps: Pick<LgrStepData, 'stepNumber' | 'title' | 'hasChart'>[];
   currentStepIndex: number;
   onSelectStep: (index: number) => void;
   viewAllMode: boolean;
@@ -17,7 +17,6 @@ export const StepNavigator: React.FC<StepNavigatorProps> = ({
   viewAllMode,
   onToggleViewAll,
 }) => {
-  const chartSteps = [3, 4, 7, 9, 10];
   const progressPercent = ((currentStepIndex + 1) / steps.length) * 100;
 
   return (
@@ -67,7 +66,7 @@ export const StepNavigator: React.FC<StepNavigatorProps> = ({
           ) : (
             <>
               <ListFilter size={15} color="var(--color-cyan)" />
-              Exibir Todos os 10 Passos
+              Exibir Todos os {steps.length} Passos
             </>
           )}
         </button>
@@ -78,17 +77,19 @@ export const StepNavigator: React.FC<StepNavigatorProps> = ({
         <div className="stepper-track">
           {steps.map((step, idx) => {
             const isActive = idx === currentStepIndex;
-            const hasChart = chartSteps.includes(step.stepNumber);
+            const hasChart = step.hasChart;
 
             return (
               <button
                 key={step.stepNumber}
                 className={`step-chip ${isActive ? 'active' : ''} ${hasChart ? 'has-chart' : ''}`}
+                aria-current={isActive ? 'step' : undefined}
                 onClick={() => onSelectStep(idx)}
                 title={`Passo ${step.stepNumber}: ${step.title}`}
               >
                 <span className="step-num-badge">{step.stepNumber}</span>
                 <span>Passo {step.stepNumber}</span>
+                {hasChart && <ChartLine size={14} aria-label="Gráfico neste passo" />}
               </button>
             );
           })}

@@ -18,16 +18,7 @@ export const StepCard: React.FC<StepCardProps> = ({ step, solution }) => {
       <div className="step-card-header">
         <div className="step-title-group">
           <h2>
-            <span
-              style={{
-                background: 'linear-gradient(135deg, var(--color-cyan), var(--color-blue))',
-                color: '#fff',
-                padding: '0.2rem 0.65rem',
-                borderRadius: 'var(--radius-sm)',
-                fontSize: '0.9rem',
-                fontWeight: 800,
-              }}
-            >
+            <span className="step-label">
               Passo {step.stepNumber}
             </span>
             <span>{step.title}</span>

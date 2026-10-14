@@ -549,7 +549,7 @@ body::before {
 
 /* Interactive Canvas / LgrPlot Container */
 .plot-container {
-  background: #060911;
+  background: var(--bg-plot);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
   overflow: hidden;
@@ -561,7 +561,7 @@ body::before {
 }
 
 [data-theme='light'] .plot-container {
-  background: #f8fafc;
+  background: var(--bg-plot);
 }
 
 .plot-header {
@@ -968,3 +968,18 @@ body::before {
     overflow-wrap: anywhere;
   }
 }
+/* Primitivas compartilhadas pelas duas unidades. */
+.step-label { background: linear-gradient(135deg, var(--color-cyan), var(--color-blue)); color: #fff; padding: .2rem .65rem; border-radius: var(--radius-sm); font-size: .9rem; font-weight: 800; flex-shrink: 0; }
+.step-card { padding: 1.5rem; display: flex; flex-direction: column; gap: 1.25rem; }
+:root { --status-ok-bg: rgba(16, 185, 129, .15); --status-ok-text: #6ee7b7; --status-warn-bg: rgba(245, 158, 11, .15); --status-warn-text: #fcd34d; }
+[data-theme='light'] { --status-ok-bg: #dcfce7; --status-ok-text: #166534; --status-warn-bg: #fef3c7; --status-warn-text: #92400e; }
+.btn:disabled { opacity: .55; cursor: not-allowed; transform: none; }
+button:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 3px; }
+
+:root { --bg-plot: #060911; }
+[data-theme='light'] { --bg-plot: #f8fafc; }
+.step-chip.has-chart::after { content: none; }
+
+.transfer-preview { display: flex; align-items: center; flex-wrap: wrap; gap: 1rem; padding: .85rem 1.25rem; background: var(--bg-input); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); font-size: .95rem; margin-top: 1rem; }
+.transfer-preview > div { min-width: 0; max-width: 100%; overflow-x: auto; padding-block: .25rem; }
+.transfer-preview-product { color: var(--text-accent); }

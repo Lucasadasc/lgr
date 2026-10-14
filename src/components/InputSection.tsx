@@ -235,20 +235,7 @@ export const InputSection: React.FC<InputSectionProps> = ({
       )}
 
       {/* Live Transfer Function Previews */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-around',
-          flexWrap: 'wrap',
-          gap: '1rem',
-          padding: '0.85rem 1.25rem',
-          background: 'var(--bg-input)',
-          border: '1px solid var(--border-subtle)',
-          borderRadius: 'var(--radius-md)',
-          fontSize: '0.95rem',
-        }}
-      >
+      <div className="transfer-preview">
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <MathView math={previewG} />
         </div>
