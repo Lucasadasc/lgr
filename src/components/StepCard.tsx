@@ -13,7 +13,7 @@ export const StepCard: React.FC<StepCardProps> = ({ step, solution }) => {
   const isChartStep = [3, 4, 7, 9, 10].includes(step.stepNumber);
 
   return (
-    <div className="glass-card step-card" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+    <div className="glass-card step-card">
       {/* Header */}
       <div className="step-card-header">
         <div className="step-title-group">

@@ -1,0 +1,107 @@
+/* Ritmo compartilhado: 4/8 px nos detalhes, 12/16 px nos grupos,
+   24/32 px entre seções. Apenas tela: mantém o documento de impressão. */
+:root {
+  --space-detail: 4px;
+  --space-label: 8px;
+  --space-related: 12px;
+  --space-group: 16px;
+  --space-section: 24px;
+  --space-panel: 24px;
+  --space-page: 24px;
+}
+
+@media screen {
+  .main-content { padding: var(--space-page); gap: var(--space-section); }
+  .header-wrapper { padding: var(--space-group) var(--space-page); }
+  .header-content, .header-actions { gap: var(--space-related); }
+  .unit-one, .conteudo-controladores, .step-card-container { gap: var(--space-section); }
+  .tabs-container { padding: var(--space-detail); gap: var(--space-detail); }
+  .tab-btn { padding: var(--space-label) var(--space-related); min-height: 44px; }
+  .input-section { display: flex; flex-direction: column; padding: var(--space-panel); gap: var(--space-section); }
+  .input-grid, .grid2 { gap: var(--space-group) var(--space-section); }
+  .form-group { gap: var(--space-label); }
+  .form-input { padding: 10px var(--space-related); min-height: 44px; }
+  .step-card { padding: var(--space-panel); gap: var(--space-group); }
+  .step-card-header { padding-bottom: var(--space-group); gap: var(--space-related); }
+  .step-title-group h2 { gap: var(--space-label); line-height: 1.4; }
+  .step-subtitle { margin-top: var(--space-label); }
+  .step-content-grid { gap: var(--space-section); }
+  .stepper-wrapper { gap: var(--space-related); }
+  .stepper-header { gap: var(--space-related); }
+  .stepper-track { gap: var(--space-label); padding-bottom: var(--space-detail); }
+  .step-chip { min-height: 44px; padding: var(--space-label) var(--space-related); }
+  .formula-box { padding: var(--space-group); gap: var(--space-related); }
+  .formula-item { padding: var(--space-detail) 0; }
+  /* KaTeX already has tall fractions/matrices; do not add its display margins
+     to the formula container's own padding as well. */
+  :is(.formula-box, .formula-item, .transfer-preview) .katex-display { margin: 0; }
+  .transfer-preview { margin-top: var(--space-group); padding: var(--space-related) var(--space-group); gap: var(--space-group); }
+  .plot-header { padding: var(--space-related) var(--space-group); }
+  .plot-legend { padding: var(--space-related) var(--space-group); gap: var(--space-label) var(--space-group); }
+  .preset-grid { gap: var(--space-group); }
+  .preset-card { padding: var(--space-group); gap: var(--space-label); }
+  .modal-overlay { padding: var(--space-group); }
+  .modal-container { padding: var(--space-panel); gap: var(--space-section); }
+  .footer { padding: var(--space-section) var(--space-page); }
+
+  /* Unidade 2: ritmo interno dos fieldsets e dos blocos de resolução. */
+  .formulario-projeto { display: grid; gap: var(--space-section); }
+  .formulario-projeto legend { margin-bottom: var(--space-related); }
+  .formulario-projeto fieldset > * + * { margin-top: var(--space-group); }
+  .formulario-projeto label, .visualizacao-projeto label,
+  #painel-controladores .step-body label { gap: var(--space-label); }
+  .visualizacao-projeto { margin: 0; }
+  .impressao-lista, .print-actions { display: grid; justify-items: start; gap: var(--space-label); }
+  .resolution-step { margin-top: var(--space-section); }
+  #painel-controladores .step-body > * + *,
+  #painel-controladores .memoria-completa > * + * { margin-top: var(--space-related); }
+  #painel-controladores .step-body > label { margin: var(--space-group) 0 0; }
+  #painel-controladores .formula { margin-block: 0; }
+  #painel-controladores .step-body > .formula:not(:first-child),
+  #painel-controladores .memoria-completa > .formula:not(:first-child) { margin-top: var(--space-related); }
+  #painel-controladores .badge-ok, #painel-controladores .badge-warn { margin-bottom: 0; padding: var(--space-related) var(--space-group); }
+  .ganhos-projeto { gap: var(--space-group); }
+  .lista-polos { gap: var(--space-label) var(--space-group); }
+
+  /* Unidade 3: o gap define os grupos; margens ficam só no texto didático. */
+  .u3 { display: flex; flex-direction: column; gap: var(--space-group); padding: var(--space-panel); }
+  .u3 h1 { line-height: 1.3; }
+  .u3 > h1 + p { margin-top: calc(-1 * var(--space-label)); }
+  .u3-inputs { margin: 0; gap: var(--space-group) var(--space-section); }
+  .u3 label { gap: var(--space-label); }
+  .u3 textarea, .u3 select { padding: var(--space-related); }
+  #u3-polinomios { display: grid; gap: var(--space-related); }
+  .u3-actions { display: flex; flex-wrap: wrap; gap: var(--space-related); }
+  .u3 button { margin-bottom: 0; }
+  .u3-resolution { margin-top: var(--space-label); }
+  .u3-resolution > h2 { margin-bottom: var(--space-group); }
+  .u3 .u3-step { padding: var(--space-section) 0; }
+  .u3 .u3-step-count { margin: 0 0 var(--space-detail); }
+  .u3-step h2 { margin-bottom: var(--space-group); }
+  .u3-step h4 { margin: var(--space-section) 0 var(--space-label); }
+  .u3-step p { margin-block: var(--space-related); }
+  .u3-step ul { padding-left: var(--space-section); margin-block: var(--space-related); }
+  .u3-step li + li { margin-top: var(--space-detail); }
+  .u3-formula { margin: var(--space-related) 0; padding: var(--space-detail) 2px; }
+  .u3 .u3-step > :last-child { margin-bottom: 0; }
+}
+
+@media screen and (max-width: 768px) {
+  :root { --space-page: 16px; --space-panel: 20px; }
+}
+@media screen and (max-width: 600px) {
+  :root { --space-page: 12px; --space-panel: 16px; --space-section: 20px; }
+  /* Replaces earlier mobile !important rules with the shared panel inset. */
+  .input-section, .step-card { padding: var(--space-panel) !important; }
+  .main-content, .unit-one, .conteudo-controladores { gap: var(--space-group); }
+  .input-grid, .grid2, .u3-inputs { gap: var(--space-group); }
+  .step-card-header { padding-bottom: var(--space-related); }
+  .step-title-group h2 { row-gap: var(--space-label); }
+  .stepper-header > div { flex-wrap: wrap; }
+  .stepper-header { align-items: stretch; }
+  .stepper-header > .btn { justify-content: center; }
+  .modal-overlay { padding: var(--space-label); }
+  .modal-container { max-height: calc(100dvh - 16px); }
+  .u3-actions { flex-direction: column; }
+  .u3-actions .btn { width: 100%; }
+}

@@ -90,7 +90,7 @@ export const PointTester: React.FC<PointTesterProps> = ({
   };
 
   return (
-    <div className="glass-card" style={{ padding: '1.25rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+    <div className="glass-card" style={{ padding: 'var(--space-panel)', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <Target size={18} color="var(--color-purple)" />

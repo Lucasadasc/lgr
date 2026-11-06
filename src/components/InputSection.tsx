@@ -58,7 +58,7 @@ export const InputSection: React.FC<InputSectionProps> = ({
   const previewGH = `G(s)H(s) = \\frac{K \\cdot (${openLoopNum.formatLatex('s')})}{${openLoopDen.formatLatex('s')}}`;
 
   return (
-    <div className="glass-card input-section" style={{ padding: '1.25rem', display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+    <div className="glass-card input-section">
       {/* Top Bar: Modes & Quick Actions */}
       <div className="input-top-bar" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.75rem' }}>
         <div className="input-mode-tabs" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>

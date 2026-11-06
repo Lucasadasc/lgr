@@ -1,4 +1,5 @@
 import './unit2.css';
+import Unidade3 from './components/Unidade3';
 import React, { useState, useEffect, useMemo, lazy, Suspense } from 'react';
 import { TransferFunctionInput, PresetItem, ComplexNum } from './types/lgr';
 import { parsePolynomialInput } from './math/parser';
@@ -20,7 +21,7 @@ const ProjetoControladores = lazy(() => import('./components/controladores/Proje
 
 export const App: React.FC = () => {
   const [visitedUnit2, setVisitedUnit2] = useState(false);
-  const [unit, setUnit] = useState<1 | 2>(1);
+  const [unit, setUnit] = useState<1 | 2 | 3>(1);
   useEffect(() => { document.body.dataset.impressaoUnidade = String(unit); }, [unit]);
 
   // Theme state
@@ -123,7 +124,7 @@ export const App: React.FC = () => {
         <nav className="tabs-container unit-tabs no-print" aria-label="Unidades da disciplina">
           <button id="nav-lgr" className={`tab-btn ${unit === 1 ? 'active' : ''}`} aria-pressed={unit === 1} onClick={() => setUnit(1)}>1ª Unidade · Lugar das raízes</button>
           <button id="nav-controladores" className={`tab-btn ${unit === 2 ? 'active' : ''}`} aria-pressed={unit === 2} onClick={() => { setVisitedUnit2(true); setUnit(2); }}>2ª Unidade · Projeto e discretização</button>
-        </nav>
+        <button className={`tab-btn ${unit === 3 ? 'active' : ''}`} onClick={() => setUnit(3)} aria-pressed={unit === 3}>3ª Unidade · Espaço de estados</button></nav>
         <div hidden={unit !== 1} className="unit-one" aria-labelledby="nav-lgr">
         {/* Input Configuration & Plant Definition */}
         <InputSection
@@ -242,6 +243,7 @@ export const App: React.FC = () => {
           </div>
         )}
         </div>
+        <div hidden={unit !== 3}><Unidade3 /></div>
         {visitedUnit2 && <Suspense fallback={<p role="status">Carregando segunda unidade…</p>}><ProjetoControladores ativo={unit === 2} planta={inputData} aoAplicar={handleDesign} /></Suspense>}
       </main>
 
